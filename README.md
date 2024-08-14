@@ -57,4 +57,3 @@ In this initial series of exercises, we'll cover the basic syntax of C++: explor
 
 - Each header must be usable independently of others:
   - Your `.hpp` files must include all necessary dependencies and use include guards (or `#pragma once`) to avoid double inclusions. If an include guard is missing, the exercise will receive a grade of 0.
-
