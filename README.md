@@ -57,3 +57,54 @@ In this initial series of exercises, we'll cover the basic syntax of C++: explor
 
 - Each header must be usable independently of others:
   - Your `.hpp` files must include all necessary dependencies and use include guards (or `#pragma once`) to avoid double inclusions. If an include guard is missing, the exercise will receive a grade of 0.
+
+# ex00 - Megaphone
+The provided C++ program processes command-line arguments by converting each argument to uppercase and printing them separated by spaces. If no arguments are provided, it outputs a default message: * LOUD AND UNBEARABLE FEEDBACK NOISE *.
+
+# things to know
+
+## Namespace
+In C++, a namespace is a declarative region that provides a scope to identifiers such as variables, functions, classes, etc., to avoid name conflicts. Namespaces help organize code and prevent naming collisions, especially when using large libraries or multiple codebases with common names.
+
+To create your own namespace in C++, use the namespace keyword followed by the name of the namespace, and enclose the declarations (variables, functions, classes, etc.) inside curly braces {}.
+
+```C++
+#include <stdo.h>
+
+//declaring a global variable and a function
+int gl_var = 1;
+int f(void) {return 2;}
+
+// Creating a custom namespace named "Foo"
+namespace Foo {
+  int gl_var = 3;
+  int f(void) {return 4;}
+}
+
+// Creating a custom namespace named "Bar"
+namespace Foo {
+  int gl_var = 5;
+  int f(void) {return 6;}
+}
+```
+*Note: In C++, having three variables with the same name is not an issue because they belong to different scopes. The global gl_var is in the global scope, while the others are in the Foo namespace. C++ resolves variable names based on their scope, so there won't be any compilation conflicts.
+
+### Namespace aliasing
+Namespace aliasing in C++ allows you to create a shorter or more convenient name (alias) for an existing namespace. This is useful when you're dealing with long or nested namespaces, as it makes the code more readable and easier to manage.
+
+You can create a namespace alias using the namespace keyword followed by the alias name, an equals sign =, and the existing namespace.
+```C++
+namespace VeryLongNamespaceName {
+    void display() {
+        std::cout << "Inside VeryLongNamespaceName!" << std::endl;
+    }
+}
+
+// Create a shorter alias for the namespace
+namespace VLN = VeryLongNamespaceName;
+
+int main() {
+    // Using the alias to access the display function
+    VLN::display();  // Equivalent to VeryLongNamespaceName::display()
+}
+```
