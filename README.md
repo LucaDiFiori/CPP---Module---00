@@ -7,6 +7,7 @@ In this initial series of exercises, we'll cover the basic syntax of C++: explor
 # EX00 - MEGAPHONE
 The provided C++ program processes command-line arguments by converting each argument to uppercase and printing them separated by spaces. If no arguments are provided, it outputs a default message: * LOUD AND UNBEARABLE FEEDBACK NOISE *.
 
+***
 
 # THINGS TO KNOW
 
@@ -57,6 +58,7 @@ int main() {
 }
 ```
 
+***
 
 ## SCOPE RESOLUTION OPERATOR "::"
 The scope resolution operator in C++ is :: and is used to specify which scope an identifier (such as a variable, function, or class) belongs to. It helps disambiguate identifiers with the same name that exist in different scopes or namespaces.
@@ -109,6 +111,8 @@ int main() {
     return 0;
 }
 ```
+
+***
 
 ## STDIO STREAMS
 The C++ Standard Library provides a set of standard input and output facilities through a set of classes and functions commonly referred to as "streams." These are part of the <iostream> header. Streams are used to handle input and output operations, and they abstract away the details of how data is read from or written to different types of devices (e.g., keyboards, files, etc.).
@@ -164,6 +168,8 @@ if (outfile.is_open()) {
 }
 ```
 
+***
+
 ### 5 Error Handling
 Streams provide several methods to check their state:
 - **good():** Returns true if the stream is in a good state.
@@ -185,7 +191,7 @@ Stream manipulators are special functions that modify the formatting of the outp
 - **std::fixed:** Used to set the floating-point format to fixed-point notation
 - **std::setprecision(int):** Sets the number of digits after the decimal point for floating-point numbers.
 
-<hr style="border: 2px solid #FF5733;">
+***
 
 ## CLASS AND INSTANCE
 ## Class
