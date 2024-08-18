@@ -10,7 +10,7 @@ The provided C++ program processes command-line arguments by converting each arg
 
 # THINGS TO KNOW
 
-## Namespace
+## NAMESPACE
 In C++, a namespace is a declarative region that provides a scope to identifiers such as variables, functions, classes, etc., to avoid name conflicts. Namespaces help organize code and prevent naming collisions, especially when using large libraries or multiple codebases with common names.
 
 To create your own namespace in C++, use the namespace keyword followed by the name of the namespace, and enclose the declarations (variables, functions, classes, etc.) inside curly braces {}.
@@ -56,7 +56,7 @@ int main() {
     VLN::display();  // Equivalent to VeryLongNamespaceName::display()
 }
 ```
-## <u>Scope resolution operator "::"</u>
+## SCOPE RESOLUTION OPERATOR "::"
 The scope resolution operator in C++ is :: and is used to specify which scope an identifier (such as a variable, function, or class) belongs to. It helps disambiguate identifiers with the same name that exist in different scopes or namespaces.
 ### Key Uses of the Scope Resolution Operator
 #### 1 Accessing Global Variables or Functions:
