@@ -56,7 +56,7 @@ int main() {
     VLN::display();  // Equivalent to VeryLongNamespaceName::display()
 }
 ```
-## Scope resolution operator "::"
+## <u>Scope resolution operator "::"</u>
 The scope resolution operator in C++ is :: and is used to specify which scope an identifier (such as a variable, function, or class) belongs to. It helps disambiguate identifiers with the same name that exist in different scopes or namespaces.
 ### Key Uses of the Scope Resolution Operator
 #### 1 Accessing Global Variables or Functions:
