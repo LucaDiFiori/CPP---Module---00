@@ -370,11 +370,11 @@ int main() {
 }
 ```
 ### 2 Initialization:
-- Instances can be initialized using constructors, which are special member functions that are automatically called when an instance is created.
+- **Default Constructor:** If no constructor is explicitly defined, C++ provides a default constructor that initializes members with default values. This constructor is automatically called when an object is declared.
 ```C++
 class MyClass {
 public:
-    MyClass(int initialValue) : value(initialValue) {} // Constructor
+    MyClass() : value(0) {} // Default constructor initializes value to 0
     void showValue() const {
         std::cout << "Value: " << value << std::endl;
     }
@@ -383,8 +383,27 @@ private:
 };
 
 int main() {
-    MyClass obj1(10); // Instance with initial value 10
-    MyClass obj2(20); // Instance with initial value 20
+    MyClass obj1; // Default constructor is automatically called
+    obj1.showValue(); // Output: Value: 0
+
+    return 0;
+}
+```
+- **Parameterized Constructor:** You can define constructors that accept parameters to initialize objects with specific values.
+```C++
+class MyClass {
+public:
+    MyClass(int initialValue) : value(initialValue) {} // Parameterized constructor
+    void showValue() const {
+        std::cout << "Value: " << value << std::endl;
+    }
+private:
+    int value;
+};
+
+int main() {
+    MyClass obj1(10); // Calls parameterized constructor
+    MyClass obj2(20); // Calls parameterized constructor
 
     obj1.showValue(); // Output: Value: 10
     obj2.showValue(); // Output: Value: 20
@@ -439,10 +458,69 @@ int main() {
 }
 ```
 
+### 5 End Of The Program:
+When a C++ program ends, several things happen to the objects created during the execution of the program. Here’s what happens to objects and their destructors when the program terminates:
+#### Automatic Cleanup
+- **1 Automatic (Stack) Variables:**
+  - Objects that are created as local variables (i.e., objects with automatic storage duration) are automatically destroyed when they go out of scope. This typically happens at the end of the block in which they were declared, such as at the end of a function.
+  - If a class has a destructor defined, this destructor is automatically called when the object goes out of scope. This ensures that any cleanup code within the destructor is executed.
+```C++
+  class MyClass {
+public:
+    MyClass() { std::cout << "Constructor called\n"; }
+    ~MyClass() { std::cout << "Destructor called\n"; }
+};
 
+void myFunction() {
+    MyClass obj; // Constructor is called here
+    // Destructor will be called when obj goes out of scope
+}
 
+int main() {
+    myFunction();
+    // Destructor is called at the end of myFunction()
+    return 0;
+}
+```
 
+- **2 Dynamic (Heap) Variables:**
+  - Objects created dynamically with new (i.e., objects with dynamic storage duration) are not automatically destroyed when the program ends. They must be explicitly deleted using the delete keyword to ensure their destructors are called and resources are properly released.
+  If you forget to delete dynamically allocated objects, it can lead to memory leaks because the destructors are not called, and the allocated memory is not freed.
+```C++
+class MyClass {
+public:
+    MyClass() { std::cout << "Constructor called\n"; }
+    ~MyClass() { std::cout << "Destructor called\n"; }
+};
 
+int main() {
+    MyClass* pObj = new MyClass(); // Constructor is called here
+    delete pObj; // Destructor is called here
+    return 0;
+}
+```
+
+#### Behavior Without a Destructor
+- **No Destructor Defined:**
+  - If a class does not have an explicitly defined destructor, the compiler provides a default destructor. This default destructor performs basic cleanup, such as calling destructors of member objects (if they have destructors).
+  - If there are no resources that require explicit cleanup (e.g., no dynamic memory allocation, file handles, etc.), the default destructor is typically sufficient.
+```C++
+class MyClass {
+public:
+    MyClass() { std::cout << "Constructor called\n"; }
+    // No explicit destructor
+};
+
+int main() {
+    MyClass obj; // Default destructor will be called
+    return 0;
+}
+//In the above example, even though MyClass does not define a destructor, the default destructor will be called when obj goes out of scope
+```
+#### Summary
+- **Automatic (Stack) Variables:** When a local object goes out of scope, its destructor is called automatically if one is defined. If no destructor is defined, the compiler generates a default one.
+- **Dynamic (Heap) Variables:** Objects created with new need to be explicitly deleted using delete to ensure that their destructors are called and resources are properly released.
+- **No Destructor Defined:** If no destructor is explicitly defined, the compiler provides a default destructor that performs basic cleanup.
 
 
 
