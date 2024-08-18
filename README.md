@@ -168,8 +168,6 @@ if (outfile.is_open()) {
 }
 ```
 
-***
-
 ### 5 Error Handling
 Streams provide several methods to check their state:
 - **good():** Returns true if the stream is in a good state.
@@ -223,35 +221,38 @@ private:
 Constructors and destructors are fundamental components of classes in C++. They manage the initialization and cleanup of objects, respectively. 
 
 #### Constructor 
-##### Purpose:
-A constructor initializes an object when it's created. It sets up the object’s initial state and allocates resources if necessary.
+  - #### Purpose:
+    A constructor initializes an object when it's created. It sets up the object’s initial state and allocates resources if necessary.
+    
+  - #### Key Characteristics:
+    - **Name:** The constructor has the same name as the class.
+    - **No Return Type:** Constructors do not return a value, not even void.
+    - **Automatic Invocation:** Constructors are called automatically when an object is instantiated.
 
-##### Key Characteristics:
-- **Name:** The constructor has the same name as the class.
-- **No Return Type:** Constructors do not return a value, not even void.
-- **Automatic Invocation:** Constructors are called automatically when an object is instantiated.
+  - ##### Types of Constructors:
+    - **Default Constructor:** A constructor that takes no arguments. If no other constructor is provided, the compiler provides a default constructor.
+      - **Parameterized Constructor:** A constructor that takes one or more arguments to initialize the object with specific values.
+      - **Copy Constructor:** A constructor that initializes a new object as a copy of an existing object. It is called when an object is passed by value or explicitly copied.
 
-##### Types of Constructors:
-- **Default Constructor:** A constructor that takes no arguments. If no other constructor is provided, the compiler provides a default constructor.
+
 ```C++
+// Default constructore
 class MyClass {
 public:
     MyClass() {
         // Constructor code
     }
 };
-```
-- **Parameterized Constructor:** A constructor that takes one or more arguments to initialize the object with specific values.
-```C++
+
+// Parameterized Constructor
 class MyClass {
 public:
     MyClass(int a, double b) {
         // Constructor code using a and b
     }
 };
-```
-- **Copy Constructor:** A constructor that initializes a new object as a copy of an existing object. It is called when an object is passed by value or explicitly copied.
-```C++
+
+//Copy Constructor
 class MyClass {
 public:
     MyClass(const MyClass& other) {
@@ -260,15 +261,17 @@ public:
 };
 ```
 
+
+
 #### Destructor
-##### Purpose: 
+- ##### Purpose: 
 A destructor cleans up resources when an object is destroyed. It deallocates memory and performs other cleanup tasks.
 
-##### Key Characteristics:
-- **Name:** The destructor has the same name as the class, preceded by a tilde (~).
-- **No Parameters:** Destructors do not take any arguments.
-- **No Return Type:** Destructors do not return a value.
-- **Automatic Invocation:** Destructors are called automatically when an object goes **out of scope or is explicitly deleted.
+- ##### Key Characteristics:
+  - **Name:** The destructor has the same name as the class, preceded by a tilde (~).
+  - **No Parameters:** Destructors do not take any arguments.
+  - **No Return Type:** Destructors do not return a value.
+  - **Automatic Invocation:** Destructors are called automatically when an object goes **out of scope or is explicitly deleted.
 
 ```C++
 class MyClass {
@@ -283,10 +286,10 @@ public:
     }
 };
 ```
-##### Key Points:
-- **Destructor Call:** When an object is destroyed, the destructor is called automatically to perform any necessary cleanup.
-- **Order of Destruction:** If a class contains other objects, their destructors are called before the destructor of the containing class.
-- **Resource Management:** Destructors are crucial for managing resources like dynamically allocated memory, file handles, or network connections.
+- ##### Key Points:
+  - **Destructor Call:** When an object is destroyed, the destructor is called automatically to perform any necessary cleanup.
+  - **Order of Destruction:** If a class contains other objects, their destructors are called before the destructor of the containing class.
+  - **Resource Management:** Destructors are crucial for managing resources like dynamically allocated memory, file handles, or network connections.
 
 **Example with Dynamic Memory:**
 ```C++
