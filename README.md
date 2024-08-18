@@ -195,8 +195,8 @@ Stream manipulators are special functions that modify the formatting of the outp
 ## Class
 In C++, a class is a fundamental concept in object-oriented programming (OOP) that allows you to define your own custom data types. A class combines data and functions into a single unit, encapsulating the properties (data members) and behaviors (member functions) that operate on the data.
 
-### Key Components of a Class
-#### 1 Class Definition:
+## Key Components of a Class
+### 1 Class Definition:
 - A **class** is defined using the class keyword, followed by the class name and a block of code that contains its members.
 ```C++
 class MyClass {
@@ -208,23 +208,23 @@ private:
 };
 ```
 
-#### 2 Data Members:
+### 2 Data Members:
 - These are variables that hold the state of the object. They can be public, private, or protected.
   - **Public:** Accessible from outside the class.
   - **Private:** Accessible only within the class.
   - **Protected:** Accessible within the class and by derived classes.
 
-#### 3 Member Functions:
+### 3 Member Functions:
 - These are functions defined inside the class that operate on the data members. They can also be public, private, or protected.
 
-#### 4 Constructors and Destructors:
+### 4 Constructors and Destructors:
 Constructors and destructors are fundamental components of classes in C++. They manage the initialization and cleanup of objects, respectively. 
 
-#### Constructor 
-  - #### Purpose:
+#### i - Constructor 
+  - ##### Purpose:
     A constructor initializes an object when it's created. It sets up the object’s initial state and allocates resources if necessary.
     
-  - #### Key Characteristics:
+  - ##### Key Characteristics:
     - **Name:** The constructor has the same name as the class.
     - **No Return Type:** Constructors do not return a value, not even void.
     - **Automatic Invocation:** Constructors are called automatically when an object is instantiated.
@@ -263,7 +263,7 @@ public:
 
 
 
-#### Destructor
+#### ii - Destructor
 - ##### Purpose: 
 A destructor cleans up resources when an object is destroyed. It deallocates memory and performs other cleanup tasks.
 
