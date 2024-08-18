@@ -185,7 +185,8 @@ Stream manipulators are special functions that modify the formatting of the outp
 - **std::fixed:** Used to set the floating-point format to fixed-point notation
 - **std::setprecision(int):** Sets the number of digits after the decimal point for floating-point numbers.
 
-## -----------------------------------------------------------------------------
+***
+
 ## CLASS AND INSTANCE
 ## Class
 In C++, a class is a fundamental concept in object-oriented programming (OOP) that allows you to define your own custom data types. A class combines data and functions into a single unit, encapsulating the properties (data members) and behaviors (member functions) that operate on the data.
