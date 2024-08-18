@@ -192,6 +192,40 @@ Stream manipulators are special functions that modify the formatting of the outp
 ***
 
 ## CLASS AND INSTANCE
+## Note on Organizing Class Definitions and Implementations
+In C++, it's common practice to separate the class declaration from its implementation:
+- Header File (.hpp or .h): Contains the class definition, the declaration of data members and member functions.
+```C++
+// MyClass.hpp
+#ifndef MYCLASS_HPP
+#define MYCLASS_HPP
+
+class MyClass {
+public:
+    MyClass();
+    ~MyClass();
+    void display() const;
+private:
+    int myNumber;
+};
+
+#endif // MYCLASS_HPP
+```
+- Source File (.cpp): Contains the implementation of the member functions defined in the class.
+```C++
+// MyClass.cpp
+#include "MyClass.hpp"
+#include <iostream>
+
+MyClass::MyClass() : myNumber(0) {}
+
+MyClass::~MyClass() {}
+
+void MyClass::display() const {
+    std::cout << "Number: " << myNumber << std::endl;
+}
+```
+
 ## Class
 In C++, a class is a fundamental concept in object-oriented programming (OOP) that allows you to define your own custom data types. A class combines data and functions into a single unit, encapsulating the properties (data members) and behaviors (member functions) that operate on the data.
 
@@ -261,8 +295,6 @@ public:
 };
 ```
 
-
-
 #### ii - Destructor
 - ##### Purpose: 
 A destructor cleans up resources when an object is destroyed. It deallocates memory and performs other cleanup tasks.
@@ -309,6 +341,11 @@ public:
     }
 };
 ```
+
+
+
+
+
 
 
 
