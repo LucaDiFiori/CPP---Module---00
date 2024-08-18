@@ -185,7 +185,7 @@ Stream manipulators are special functions that modify the formatting of the outp
 - **std::fixed:** Used to set the floating-point format to fixed-point notation
 - **std::setprecision(int):** Sets the number of digits after the decimal point for floating-point numbers.
 
-***
+___
 
 ## CLASS AND INSTANCE
 ## Class
