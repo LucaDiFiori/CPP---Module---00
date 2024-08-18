@@ -56,6 +56,8 @@ int main() {
     VLN::display();  // Equivalent to VeryLongNamespaceName::display()
 }
 ```
+
+
 ## SCOPE RESOLUTION OPERATOR "::"
 The scope resolution operator in C++ is :: and is used to specify which scope an identifier (such as a variable, function, or class) belongs to. It helps disambiguate identifiers with the same name that exist in different scopes or namespaces.
 ### Key Uses of the Scope Resolution Operator
@@ -108,7 +110,80 @@ int main() {
 }
 ```
 
+## STDIO STREAMS
+The C++ Standard Library provides a set of standard input and output facilities through a set of classes and functions commonly referred to as "streams." These are part of the <iostream> header. Streams are used to handle input and output operations, and they abstract away the details of how data is read from or written to different types of devices (e.g., keyboards, files, etc.).
+Here's a brief overview of the key components:
 
+### 1 Stream Classes
+- **std::istream:** This class is used for input operations. It represents the standard input stream (std::cin), but can also be used with other input sources, like files.
+- **std::ostream:** This class is used for output operations. It represents the standard output stream (std::cout), but can also be used with other output destinations, like files.
+- **std::iostream:** This is a combination of std::istream and std::ostream. It supports both input and output operations. It is typically used for streams that handle both input and output, like file streams.
+- **std::ifstream:** This class is derived from std::istream and is used specifically for reading from files.
+- **std::ofstream:** This class is derived from std::ostream and is used specifically for writing to files.
+- **std::fstream:** This class is derived from std::iostream and can be used for both reading from and writing to files.
+
+### 2 Stream Objects
+- **std::cin:** The standard input stream, typically connected to the keyboard.
+- **std::cout:** The standard output stream, typically connected to the console.
+- **std::cerr:** The standard error stream, used for error messages. It is unbuffered by default.
+- **std::clog:** The standard logging stream, used for logging messages. It is buffered by default.
+
+### 3 Basic Usage
+- **Input:** To read data from a stream, you use the extraction operator **>>** for formatted input or the getline function for reading whole lines.
+```C++
+int x;
+std::cin >> x; // Read an integer from standard input
+
+std::string line;
+std::getline(std::cin, line); // Read a line from standard input
+```
+- **Output:** To write data to a stream, you use the insertion operator **<<** for formatted output.
+```C++
+int x = 42;
+std::cout << "The value is: " << x << std::endl; // Output to standard output
+```
+
+### 4 File Operations
+- **Reading from a file**
+```C++
+std::ifstream infile("example.txt");
+if (infile.is_open()) {
+    std::string line;
+    while (std::getline(infile, line)) {
+        std::cout << line << std::endl;
+    }
+    infile.close();
+}
+```
+- **Writing to a file:**
+```C++
+std::ofstream outfile("example.txt");
+if (outfile.is_open()) {
+    outfile << "Hello, file!" << std::endl;
+    outfile.close();
+}
+```
+
+### 5 Error Handling
+Streams provide several methods to check their state:
+- **good():** Returns true if the stream is in a good state.
+- **bad():** Returns true if a serious error occurred.
+- **fail():** Returns true if an input or output operation failed.
+- **eof():** Returns true if the end of the file has been reached
+
+Ex:
+```C++
+if (infile.fail()) {
+    std::cerr << "Error reading from file" << std::endl;
+}
+```
+
+### 6 Manipulators
+Stream manipulators are special functions that modify the formatting of the output. Some common manipulators include:
+- **std::endl:** Inserts a newline character and flushes the stream
+- **std::setw(int):** Sets the width of the next input/output field.
+- **std::fixed:** Used to set the floating-point format to fixed-point notation
+- **std::setprecision(int):** Sets the number of digits after the decimal point for floating-point numbers.
 
 
 
