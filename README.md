@@ -619,6 +619,8 @@ public:
 };
 ```
 
+***
+
 ## INITIALIZATION LIST
 We've learned how to initialize the attributes of our class using a parameterized constructor. Now, let's explore another way to initialize our constants within the class.
 
@@ -703,7 +705,135 @@ The actual initialization happens before the constructor body is executed. So by
 - For **members of types without default constructors**: If your member variables are objects of classes that don’t have default constructors, you have to initialize them using an initialization list.
 - To **improve performance:** Initializing a member directly in the initialization list is more efficient than assigning a value in the constructor body, especially for complex objects.
 
+***
 
+## CONST
+In C++, the const keyword is used to define constants, making variables and functions immutable in various contexts. It helps ensure that certain values do not change after initialization, which can lead to safer, more efficient, and optimized code.
+
+The const keyword can be applied in different ways:
+
+### 1 const with Variables
+When a variable is declared as const, its value cannot be changed after initialization. This applies to both local variables and member variables of a class.
+#### 1.1 classic initialization
+```C++
+const int x = 5;
+x = 10; // ERROR: x is const and cannot be modified
+```
+#### 1.2 initialization list
+When you have a const variable in a class, you must initialize it using an initialization list in the constructor because const members must be initialized at the time of object construction and cannot be modified afterward.
+```C++
+    class Circle {
+    private:
+        const double radius;  // Constant member variable
+
+    public:
+        // Constructor with an initialization list
+        Circle(double r) : radius(r) {
+            // Initialization list initializes the const member `radius`
+            cout << "Circle created with radius: " << radius << endl;
+        }
+        //some code
+    };
+
+    int main() {
+        Circle myCircle(5.0);  // Create an instance of Circle with radius 5.0
+        //some code
+    }
+```
+
+### 2 const with Function Parameters
+When a function parameter is declared const, it means that the parameter is read-only inside the function and cannot be modified.
+```C++
+void printValue(const int x) {
+    // x is a constant, you can't modify it inside this function
+    // x = 10; // ERROR: cannot modify a const parameter
+    std::cout << x << std::endl;
+}
+```
+#### 2.1 Const Reference Parameters: 
+This is a common usage for function parameters when passing large objects, such as class instances, to avoid unnecessary copying while also ensuring that the function doesn’t modify the original object.
+```C++
+void display(const std::string& str) {
+    // str cannot be modified in this function
+    std::cout << str << std::endl;
+}
+```
+
+### 3 const with Member Functions
+In C++, you can declare a member function as const to indicate that the function will not modify any member variables of the object.
+```C++
+class Rectangle {
+private:
+    int width, height;
+
+public:
+    Rectangle(int w, int h) : width(w), height(h) {}
+
+    // A const member function
+    int getArea() const {
+        return width * height;  // This function does not modify the object
+    }
+
+    // Non-const function that modifies members
+    void setWidth(int w) {
+        width = w;
+    }
+};
+//NOTE: You cannot call non-const functions inside a const member function.
+        // const Rectangle r1(10, 20);
+        // r1.getArea();    // OK: getArea() is a const function
+        // r1.setWidth(15); // ERROR: Cannot call non-const function on a const object
+```
+
+### 4 const with Pointers
+const can be used with pointers in different ways to control mutability. There are four common cases:
+#### 4.1 const with Pointers
+You cannot change the value the pointer points to, but you can change the pointer itself to point to something else.
+```C++
+const int* ptr = &x; // ptr points to a constant int
+*ptr = 10;  // ERROR: Cannot modify the value pointed to by ptr
+ptr = &y;   // OK: Can change the pointer itself
+```
+#### 4.2 Constant pointer to a value (T* const):
+You can change the value the pointer points to, but the pointer itself cannot change.
+```C++
+int* const ptr = &x;  // Constant pointer to an int
+*ptr = 10;   // OK: Can modify the value pointed to by ptr
+ptr = &y;    // ERROR: Cannot change the pointer itself
+```
+#### 4.3 Constant pointer to a constant value (const T* const):
+You cannot change the value the pointer points to, nor can you change the pointer itself.
+```C++
+const int* const ptr = &x;
+*ptr = 10;  // ERROR: Cannot modify the value
+ptr = &y;   // ERROR: Cannot change the pointer itself
+```
+
+### 5 const with Return Types
+A function can also return a const value or const reference to ensure that the caller cannot modify the returned value.
+```C++
+const int& getConstValue(const int& x) {
+    return x;  // Return a const reference to x
+}
+
+int main() {
+    int a = 10;
+    const int& ref = getConstValue(a);
+    ref = 20; // ERROR: Cannot modify a const reference
+}
+```
+
+### Benefits of Using const:
+- **Code Safety:** By using const, you prevent unintended modifications to variables and objects, leading to more robust and bug-free code.
+- **Self-documenting Code:** const clearly indicates the intent that a value should not be modified, making the code easier to understand.
+- **Optimizations:** The compiler can sometimes make optimizations knowing that certain data won’t change during execution.
+
+### Summary of Key const Usages:
+- **const Variables:** Values that cannot be modified after initialization.
+- **const Parameters:** Ensures parameters are not modified inside the function.
+- **const Member Functions:** Member functions that don’t modify the object’s state.
+- **const Pointers:** Control whether the value or the pointer itself can be changed.
+- **const Return Types:** Ensures returned values/references are immutable.
 
 
 
@@ -762,3 +892,4 @@ The actual initialization happens before the constructor body is executed. So by
 
 - Each header must be usable independently of others:
   - Your `.hpp` files must include all necessary dependencies and use include guards (or `#pragma once`) to avoid double inclusions. If an include guard is missing, the exercise will receive a grade of 0.
+
