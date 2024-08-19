@@ -9,7 +9,7 @@ The provided C++ program processes command-line arguments by converting each arg
 
 ***
 
-# THINGS TO KNOW
+# C++ BASICS
 
 ## NAMESPACE
 In C++, a namespace is a declarative region that provides a scope to identifiers such as variables, functions, classes, etc., to avoid name conflicts. Namespaces help organize code and prevent naming collisions, especially when using large libraries or multiple codebases with common names.
@@ -760,7 +760,7 @@ void display(const std::string& str) {
 ```
 
 ### 3 const with Member Functions
-In C++, you can declare a member function as const to indicate that the function will not modify any member variables of the object.
+In C++, you can declare a member function as const to indicate that the function **will not modify any member variables of the object**.
 ```C++
 class Rectangle {
 private:
@@ -835,7 +835,9 @@ int main() {
 - **const Pointers:** Control whether the value or the pointer itself can be changed.
 - **const Return Types:** Ensures returned values/references are immutable.
 
+***
 
+## VISIBILITY
 
 
 
