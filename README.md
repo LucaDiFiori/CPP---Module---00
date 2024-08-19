@@ -522,6 +522,111 @@ int main() {
 - **Dynamic (Heap) Variables:** Objects created with new need to be explicitly deleted using delete to ensure that their destructors are called and resources are properly released.
 - **No Destructor Defined:** If no destructor is explicitly defined, the compiler provides a default destructor that performs basic cleanup.
 
+***
+
+## THIS
+In C++, this is a keyword that refers to the **current instance** of a class or struct. It is a pointer to the object on which a member function is being called. The this pointer is available inside all non-static member functions and can be used to refer to the object itself.
+### Key Points about this:
+- #### 1 Pointer to the Current Object:
+    - Inside a member function of a class, this points to the object that invoked the function. It allows you to refer to the calling object’s members.
+- #### 2 Accessing Members:
+    - this->member allows you to access the data members or member functions of the object that invoked the current function.
+- #### 3 Implicit Use:
+    - You don't always need to explicitly use this to refer to members because the compiler automatically understands that you are referring to the current object’s members. However, you can explicitly use this when needed (e.g., if there’s a name conflict with a local variable).
+- #### 4 Const Member Functions:
+    - In **const** member functions, this is a pointer to const (i.e., this is of type const ClassName*), so the function cannot modify the object.
+- #### 5 Returning from Functions:
+    - **this** can be returned from member functions when you want to return the object itself or for **method chaining**.
+    **Method chaining** allows you to call multiple member functions in a single line. The key idea behind method chaining is that each function returns a reference to the current object (i.e., *this), so further member functions can be called on that object.
+- #### 6 Available in Non-Static Member Functions Only:
+    - this is available only in non-static member functions because static member functions do not belong to any particular instance of a class.
+
+#### Example
+```C++
+#include <iostream>
+using namespace std;
+
+class Rectangle {
+private:
+    int width;
+    int height;
+
+public:
+    // Constructor
+    Rectangle(int width, int height) {
+        // Using 'this' to resolve member and parameter name conflicts
+        //Note: i use the "->" symbol because "this" is a pointer
+        this->width = width;
+        this->height = height;
+    }
+
+    // A function to calculate the area
+    int area() {
+        return (this->width * this->height); // using 'this' explicitly
+    }
+
+    // A function that returns a reference to the current object
+    Rectangle &setWidth(int width) {
+        this->width = width;
+        return *this; // returning the current object for method chaining
+    }
+
+    Rectangle& setHeight(int height) {
+        this->height = height;
+        return *this;
+    }
+
+    void display() {
+        cout << "Width: " << this->width << ", Height: " << this->height << endl;
+    }
+};
+
+int main() {
+    Rectangle rect(10, 20);
+
+    rect.display(); // Width: 10, Height: 20
+
+    // Using method chaining, since the member functions return *this
+    rect.setWidth(15).setHeight(25);
+
+    rect.display(); // Width: 15, Height: 25
+    cout << "Area: " << rect.area() << endl; // Area: 375
+
+    return 0;
+}
+```
+Here’s another example where we use this to call a method from within the constructor:
+```C++
+class Rectangle {
+private:
+    int width;
+    int height;
+
+public:
+    // Constructor using "this" to call methods
+    Rectangle(int w, int h) {
+        this->setWidth(w);   // Using "this" to call the setWidth() method
+        this->setHeight(h);  // Using "this" to call the setHeight() method
+    }
+    // Method to set width
+    void setWidth(int w) {
+        this->width = w;
+    }
+    // Method to set height
+    void setHeight(int h) {
+        this->height = h;
+    }
+};
+```
+
+
+
+
+
+
+
+
+
 
 
 # C++ PROJECT GUIDELINES
