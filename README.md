@@ -1294,7 +1294,9 @@ In this example, setStaticValue and showStaticValue are static member functions.
 
 - **Static Member Functions:** Can be called without creating an instance of the class. They can only access static member variables and functions.
 
+***
 
+## POINTERS TO MEMBERS 
 
 
 
