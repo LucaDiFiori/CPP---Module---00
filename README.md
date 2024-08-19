@@ -1190,11 +1190,10 @@ Static member variables are declared inside the class with the static keyword an
 **Scope:** Shared across all instances of a class.
 **Lifetime:** Exists for the duration of the program, similar to static local variables.
 
-**Initialization**
+**Initialization:**
 To initialize a static member variable in C++, you need to follow a specific process. Here's a step-by-step guide on how to do it:
 - Declare the Static Member Variable in the Class Definition: This is done in the class definition in the header file (.h or .hpp).
 - Define the Static Member Variable in a .cpp File: This is done outside the class definition in a .cpp file where the static member is actually given a value.
-**initialization example**
 ```C++
 //MyClass.h: In the header file, you declare the static member variable within the class.
 #ifndef MYCLASS_H
