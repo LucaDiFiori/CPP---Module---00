@@ -838,6 +838,475 @@ int main() {
 ***
 
 ## VISIBILITY
+In C++, visibility (also known as access control) refers to the rules that govern how different parts of a program can access class members (attributes and methods). This is crucial for encapsulation, a key principle of object-oriented programming that helps manage complexity and protect the integrity of data.
+
+**Naming convention** 
+Use the "-" symbol like so: _privateName
+
+## Visibility Levels in C++
+C++ provides three primary access specifiers to control visibility:
+
+### 1 public:
+- Members declared as public are accessible from anywhere in the program. They can be accessed by any code that has visibility to the class.
+- Use public to expose methods and variables that need to be accessible from outside the class.
+
+### 2 protected:
+- Members declared as protected are accessible only within the class itself and by derived (sub)classes. They are not accessible from outside the class, except through derived classes.
+- Use protected for members that should be accessible to subclasses but not to other parts of the program.
+
+### 3 private:
+- Members declared as private are accessible only within the class itself. They are not accessible from outside the class or from derived classes.
+- Use private to hide implementation details and protect the internal state of the class from external interference.
+
+### Example of Access Specifiers
+```C++
+class Base {
+public:
+    int publicVar;       // Accessible from anywhere
+
+    void publicMethod() {
+        cout << "Public method called" << endl;
+    }
+
+protected:
+    int protectedVar;    // Accessible only within this class and derived classes
+
+    void protectedMethod() {
+        cout << "Protected method called" << endl;
+    }
+
+private:
+    int _privateVar;      // Accessible only within this class
+
+    void _privateMethod() {
+        cout << "Private method called" << endl;
+    }
+
+public:
+    // Function to access private members from within the class
+    void accessPrivateMembers() {
+        _privateVar = 10;
+        _privateMethod();
+    }
+};
+
+class Derived : public Base {
+public:
+    void accessBaseMembers() {
+        publicVar = 5;              // OK: public member is accessible
+        publicMethod();            // OK: public method is accessible
+
+        protectedVar = 10;         // OK: protected member is accessible in derived class
+        protectedMethod();        // OK: protected method is accessible in derived class
+
+        // _privateVar = 20;       // ERROR: private member of Base is not accessible
+        // _privateMethod();      // ERROR: private method of Base is not accessible
+    }
+};
+
+int main() {
+    Base b;
+    b.publicVar = 1;             // OK: public member is accessible
+    b.publicMethod();           // OK: public method is accessible
+
+    // b.protectedVar = 2;      // ERROR: protected member is not accessible
+    // b.protectedMethod();    // ERROR: protected method is not accessible
+
+    // b._privateVar = 3;       // ERROR: private member is not accessible
+    // b._privateMethod();     // ERROR: private method is not accessible
+
+    b.accessPrivateMembers();   // OK: This method is public and can access private members
+
+    Derived d;
+    d.accessBaseMembers();      // OK: Accesses members from the Base class
+
+    return 0;
+}
+```
+
+### Additional Points:
+- **Default Access Specifiers:**
+    - **For classes:** Members are private by default.
+    - **For structs:** Members are public by default.
+      ```C++
+        struct MyStruct {
+             int x;  // x is public by default
+        };
+
+        class MyClass {
+             int x;  // x is private by default
+        };
+      ```
+- **Friend Classes and Functions:**
+    - Classes or functions can be declared as friend to allow them access to private and protected members. This is useful for operator overloading and other special cases.
+    ``` C++
+    class FriendClass;  // Forward declaration
+
+    class MyClass {
+        private:
+            int _privateVar;
+        public:
+            friend class FriendClass;  // Friend class declaration
+    };
+
+    class FriendClass {
+        public:
+            void accessMyClass(MyClass& obj) {
+            obj._privateVar = 100;  // OK: Friend class can access private members
+        }
+    };
+    ```
+
+***
+
+## ACCESSORS
+Accessors in C++ are member functions that provide controlled access to the private or protected data members of a class. They are part of the principle of encapsulation in object-oriented programming, which ensures that the internal state of an object is not directly accessible from outside the class. Instead, access to these members is provided through public methods.
+
+### Purpose of Accessors
+- **Encapsulation:** Accessors help protect the internal state of an object by restricting direct access and modifications to its data members.
+- **Controlled Access:** They allow controlled access to private data members, potentially adding validation or logic when retrieving or modifying data.
+- **Read-Only Access:** Accessors can be used to provide read-only access to private data members, ensuring that external code cannot modify the data.
+
+### Types of Accessors
+- **Getter Methods:** These methods are used to retrieve the value of private or protected data members. They are often called "getters" or "accessors."
+- **Setter Methods:** These methods are used to modify the value of private or protected data members. They are often called "setters" or "mutators."
+
+### Example
+```C++
+class Rectangle {
+private:
+    int width;
+    int height;
+
+public:
+    // Constructor
+    Rectangle(int w, int h) : width(w), height(h) {}
+
+    // Getter for width
+    int getWidth() const {
+        return width;
+    }
+
+    // Setter for width
+    void setWidth(int w) {
+        if (w >= 0) {  // Example validation
+            width = w;
+        }
+    }
+
+    // Getter for height
+    int getHeight() const {
+        return height;
+    }
+
+    // Setter for height
+    void setHeight(int h) {
+        if (h >= 0) {  // Example validation
+            height = h;
+        }
+    }
+
+    // Method to calculate area
+    int getArea() const {
+        return width * height;
+    }
+};
+
+int main() {
+    Rectangle rect(10, 20);
+
+    // Accessing private members via accessors
+    cout << "Width: " << rect.getWidth() << endl;
+    cout << "Height: " << rect.getHeight() << endl;
+    cout << "Area: " << rect.getArea() << endl;
+
+    // Modifying private members via setters
+    rect.setWidth(15);
+    rect.setHeight(25);
+
+    cout << "Updated Width: " << rect.getWidth() << endl;
+    cout << "Updated Height: " << rect.getHeight() << endl;
+    cout << "Updated Area: " << rect.getArea() << endl;
+}
+```
+- width and height are private data members and cannot be accessed directly from 
+  outside the class.
+- Getter methods allow read-only access to width and height. 
+  They are **marked const** to indicate that they do not modify the object’s state.
+- Setter methods allow modification of the private members width and height. 
+
+***
+
+## COMPARISONS OF OBJECTS
+To compare objects of custom classes, you need to define how objects should be compared. 
+This is done in 2 ways:
+
+### 1 Overloading Comparison Operators
+Suppose you have a Point class and you want to compare Point objects based on their x and y coordinates.
+```C++
+class Point {
+private:
+    int x, y;
+
+public:
+    Point(int x, int y) : x(x), y(y) {}
+
+    // Overload equality operator
+    bool operator==(const Point& other) const {
+        return (x == other.x) && (y == other.y);
+    }
+
+    // Overload inequality operator
+    bool operator!=(const Point& other) const {
+        return !(*this == other);
+    }
+
+    // Overload less than operator
+    bool operator<(const Point& other) const {
+        return (x < other.x) || (x == other.x && y < other.y);
+    }
+
+    // Overload greater than operator
+    bool operator>(const Point& other) const {
+        return (x > other.x) || (x == other.x && y > other.y);
+    }
+
+    // Display the point
+    void display() const {
+        cout << "(" << x << ", " << y << ")" << endl;
+    }
+};
+
+int main() {
+    Point p1(3, 4);
+    Point p2(5, 6);
+    Point p3(3, 4);
+
+    cout << "p1 == p2: " << (p1 == p2) << endl; // false
+    cout << "p1 == p3: " << (p1 == p3) << endl; // true
+    cout << "p1 != p2: " << (p1 != p2) << endl; // true
+    cout << "p1 < p2: " << (p1 < p2) << endl;   // true
+    cout << "p1 > p2: " << (p1 > p2) << endl;   // false
+}
+```
+
+### 2 Comparison methods
+you can alternatively create methods within a class to compare objects, rather than overloading comparison operators. While operator overloading is a common and idiomatic approach in C++, providing methods for comparison can be useful for clarity or when operator overloading is not desired.
+```C++
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person {
+private:
+    string name;
+    int age;
+
+public:
+    // Constructor
+    Person(const string& name, int age) : name(name), age(age) {}
+
+    // Method to check if the current person is older than another person
+    bool isOlderThan(const Person* other) const {
+        if (other == nullptr) {
+            cerr << "Error: Comparison with a null pointer." << endl;
+            return false;
+        }
+        return (age > other->age);
+    }
+
+    // Method to check if the current person is younger than another person
+    bool isYoungerThan(const Person* other) const {
+        if (other == nullptr) {
+            cerr << "Error: Comparison with a null pointer." << endl;
+            return false;
+        }
+        return age < other->age;
+    }
+
+    // Method to check if the current person is the same age as another person
+    bool isSameAgeAs(const Person* other) const {
+        if (other == nullptr) {
+            cerr << "Error: Comparison with a null pointer." << endl;
+            return false;
+        }
+        return age == other->age;
+    }
+
+    // Display the person's information
+    void display() const {
+        cout << "Name: " << name << ", Age: " << age << endl;
+    }
+};
+
+int main() {
+    Person alice("Alice", 30);
+    Person bob("Bob", 25);
+    Person charlie("Charlie", 30);
+
+    // Display information
+    alice.display();
+    bob.display();
+    charlie.display();
+
+    // Compare ages using pointers
+    cout << "Alice is older than Bob: " << (alice.isOlderThan(&bob) ? "Yes" : "No") << endl;
+    cout << "Bob is younger than Charlie: " << (bob.isYoungerThan(&charlie) ? "Yes" : "No") << endl;
+    cout << "Alice is the same age as Charlie: " << (alice.isSameAgeAs(&charlie) ? "Yes" : "No") << endl;
+
+    // Comparing with a null pointer (error case)
+    Person* nullPerson = nullptr;
+    cout << "Alice is older than a null person: " << (alice.isOlderThan(nullPerson) ? "Yes" : "No") << endl;
+}
+
+//NOTE:if the elements you need to compare are private within a class, you typically need to use getter methods
+```
+
+***
+
+## STATIC - NON MEMBER ATTRIBUTES AND NON MEMBER FUNCTIONS
+In C++, non-member attributes and non-member functions are elements that exist outside the scope of a class but can interact with class objects or work with class data in specific ways. Understanding these concepts can be useful for designing flexible and modular code.
+
+Let's delve into non-member attributes and non-member functions with a focus on how the static keyword plays a role in their behavior and organization in C++.
+
+We saw that a member function or attribute is something present in the instance of a class. This means that the class needs to be instantiated in order to use these attributes or functions. Another property of member attributes is that each attribute is unique to every instance
+
+### Static Keyword Overview
+In C++, the static keyword can be used in different contexts:
+
+- **Static Member Variables:** Belong to the class rather than any particular instance.
+- **Static Member Functions:** Can be called without an object of the class and can only access static members.
+- **Static Local Variables:** Persist between function calls and retain their value.
+- **Static Global Variables and Functions:** Have internal linkage, meaning they are limited to the file in which they are defined.
+
+### Non-Member Attributes with Static Keyword
+C++ does not have "non-member attributes" in the sense of class-level attributes outside of classes. However, you can use the static keyword for global variables and functions to achieve a similar effect.
+
+### Static Member Variables and Functions
+Static member variables and functions are part of a class but are shared among all instances of the class. They can be accessed without creating an instance of the class.
+
+#### 1 Static Member Variables
+Static member variables are declared inside the class with the static keyword and must be defined outside the class.
+**Scope:** Shared across all instances of a class.
+**Lifetime:** Exists for the duration of the program, similar to static local variables.
+
+**Initialization**
+To initialize a static member variable in C++, you need to follow a specific process. Here's a step-by-step guide on how to do it:
+- Declare the Static Member Variable in the Class Definition: This is done in the class definition in the header file (.h or .hpp).
+- Define the Static Member Variable in a .cpp File: This is done outside the class definition in a .cpp file where the static member is actually given a value.
+**initialization example**
+```C++
+//MyClass.h: In the header file, you declare the static member variable within the class.
+#ifndef MYCLASS_H
+#define MYCLASS_H
+
+class MyClass {
+public:
+    // Static member variable declaration
+    static int staticValue;
+
+    // other members
+};
+#endif // MYCLASS_H
+
+
+
+//MyClass.cpp: In the source file, you define the static member variable and implement the static member functions.
+#include <iostream>
+#include "MyClass.h"
+
+using namespace std;
+
+// Definition and initialization of the static member variable
+int MyClass::staticValue = 0;
+
+//...
+```
+
+**Static Member Variables example**
+```C++
+#include <iostream>
+using namespace std;
+
+class MyClass {
+public:
+    // Static member variable
+    static int staticValue;
+
+    void showValue() const {
+        cout << "Static Value: " << staticValue << endl;
+    }
+};
+
+// Definition of the static member variable
+int MyClass::staticValue = 0;
+
+int main() {
+    MyClass obj1, obj2;
+    
+    // Modify static member variable through one object
+    obj1.staticValue = 10;
+    
+    // Access static member variable through another object
+    obj2.showValue(); // Outputs: Static Value: 10
+
+    return 0;
+}
+```
+#### 2 Static Member Functions
+Note: In a non member function i can't use the "this" ketword
+```C++
+#include <iostream>
+using namespace std;
+
+class MyClass {
+private:
+    static int staticValue;
+
+public:
+    static void setStaticValue(int value) {
+        staticValue = value;
+    }
+
+    static void showStaticValue() {
+        cout << "Static Value: " << staticValue << endl;
+    }
+};
+
+// Definition of the static member variable
+int MyClass::staticValue = 0;
+
+int main() {
+    // Set and show static value using static member functions
+    MyClass::setStaticValue(100);
+    MyClass::showStaticValue(); // Outputs: Static Value: 100
+
+    return 0;
+}
+```
+In this example, setStaticValue and showStaticValue are static member functions. They can be called using the class name without creating an instance.
+
+### Summary
+- **Static Global Variables and Functions:** static global variables and functions are limited to the file where they are defined. They provide encapsulation and prevent naming conflicts.
+
+- **Static Member Variables:** Belong to the class rather than any particular instance. They are shared among all instances of the class and must be defined outside the class declaration.
+
+- **Static Member Functions:** Can be called without creating an instance of the class. They can only access static member variables and functions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
