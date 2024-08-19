@@ -1209,6 +1209,8 @@ public:
 #endif // MYCLASS_H
 
 
+/*************************************************/
+
 
 //MyClass.cpp: In the source file, you define the static member variable and implement the static member functions.
 #include <iostream>
