@@ -2,8 +2,8 @@ NAME = phonebook
 CC = g++
 CPPFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = $(wildcard src/*.cpp)
-
+SRCS = $(wildcard src/*.cpp) \
+		main.cpp
 OBJ_DIR = obj
 OBJ = $(SRCS:src/%.cpp=$(OBJ_DIR)/%.o)
 
