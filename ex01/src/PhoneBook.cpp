@@ -124,7 +124,7 @@ void PhoneBook::addDarkSecret(int index)
 //Add method
 void PhoneBook::add(void)
 {
-	if (this->_nbContacts > 7)
+	/*if (this->_nbContacts > 7)
 	{
 		std::cout << RED "The PhoneBook is full!" << std::endl;
 		std::cout << RED "This contact will be added to the top of the list." << std::endl;
@@ -143,9 +143,27 @@ void PhoneBook::add(void)
 		PhoneBook::addPhoneNumber(this->_nbContacts);
 		PhoneBook::addDarkSecret(this->_nbContacts);
 		this->_nbContacts++;
-	}
+	}*/
+    int index;
 
+    if (this->_nbContacts > 7)
+    {
+        std::cout << RED "The PhoneBook is full!" << std::endl;
+        std::cout << RED "This contact will be added to the top of the list." << std::endl;
+        index = 0;
+        this->_nbContacts--; // Decrementa il contatore per sovrascrivere il contatto più vecchio
+    }
+    else
+    {
+        index = this->_nbContacts;
+        this->_nbContacts++; // Incrementa il contatore per aggiungere un nuovo contatto
+    }
 
+    PhoneBook::addName(index);
+    PhoneBook::addLastName(index);
+    PhoneBook::addNickName(index);
+    PhoneBook::addPhoneNumber(index);
+    PhoneBook::addDarkSecret(index);
 
 };
 
