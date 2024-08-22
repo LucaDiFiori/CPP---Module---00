@@ -16,10 +16,12 @@
 #include <iostream>
 #include <string>
 #include "../inc/Contact.class.hpp"
+#include "../inc/Utils.class.hpp"
 
 # define RED	"\033[91m"
 # define GREEN "\033[92m"
 # define BLUE "\033[94m"
+# define WHITE "\033[0m"
 
 class PhoneBook
 {
@@ -41,7 +43,7 @@ class PhoneBook
 		void addPhoneNumber(int index);
 		void addDarkSecret(int index);
 		void add(void);
-		//void search(void);
+		void search(void);
 		//void printContact(int index);
 
 
