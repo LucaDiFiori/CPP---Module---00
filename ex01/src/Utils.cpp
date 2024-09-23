@@ -27,3 +27,26 @@ bool Utils::isDigitsOnly(const std::string &str)
 	}
 	return (true);
 }
+
+void Utils::printHeader(void)
+{
+	std::cout << "---------------------------------------------" << std::endl;
+	std::cout << "|     index|first name| last name|  nickname|" << std::endl;
+	std::cout << "---------------------------------------------" << std::endl;
+}
+
+//quetsa funzione prende una stringa (campo del contatto) e la formatta nei 10
+// spazi richiesti
+std::string Utils::formatFields(std::string str)
+{
+	if (str.size() > 10)
+	{
+		str.resize(9);
+		str.append(".");
+	}
+	else if (str.size() < 10)
+	{
+		str.insert(0, 10 - str.size(), ' ');
+	}
+	return ("|" + str);
+}

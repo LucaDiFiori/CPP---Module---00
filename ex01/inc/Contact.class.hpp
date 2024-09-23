@@ -30,7 +30,7 @@ class Contact
 		Contact();
 
 		//getters. "Const" at the end of the function means that the function is not allowed to modify the object.
-		std::string getFisrtName() const;
+		std::string getFirstName() const;
 		std::string getLastName() const;
 		std::string getNickName() const;
 		std::string getPhoneNumber() const;

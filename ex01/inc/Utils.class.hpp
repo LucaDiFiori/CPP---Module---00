@@ -14,11 +14,14 @@
 #define UTILS_HPP
 
 #include <string>
+#include <iostream>
 
 class Utils
 {
 	public:
 		static bool isDigitsOnly(const std::string &str);
+		static void printHeader(void);
+		static std::string formatFields(std::string);
 };
 
 #endif
