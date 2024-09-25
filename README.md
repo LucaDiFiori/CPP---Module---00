@@ -11,6 +11,25 @@ The provided C++ program processes command-line arguments by converting each arg
 
 # C++ BASICS
 
+# Table of Contents
+- [NAMESPACE](#namespace)
+- [SCOPE RESOLUTION OPERATOR "::"](#scope-resolution-operator-"::")
+- [STD IOSTREAMS](#std-iostreams)
+- [CLASS AND INSTANCE](#class-and-instance)
+- [THIS](#this)
+- [INITIALIZATION LIST](#initialization-list)
+- [CONST](#const)
+- [VISIBILITY](#visibility)
+- [ACCESSORS](#accessors)
+- [COMPARISONS OF OBJECTS](#common-of-objects)
+- [STATIC - NON MEMBER ATTRIBUTES AND NON MEMBER FUNCTIONS](#static---non-member-attributes-and-non-member-functions)
+- [REFERENCE (&)](#reference-(&))
+- [POINTERS TO MEMBERS](#pointers-to-members)
+- [STD::VECTOR](#std::vector)
+- [STD::PAIR](#std::pair)
+
+***
+
 ## NAMESPACE
 In C++, a namespace is a declarative region that provides a scope to identifiers such as variables, functions, classes, etc., to avoid name conflicts. Namespaces help organize code and prevent naming collisions, especially when using large libraries or multiple codebases with common names.
 
@@ -114,7 +133,7 @@ int main() {
 
 ***
 
-## STDIO STREAMS
+## STD IOSTREAMS
 The C++ Standard Library provides a set of standard input and output facilities through a set of classes and functions commonly referred to as "streams." These are part of the <iostream> header. Streams are used to handle input and output operations, and they abstract away the details of how data is read from or written to different types of devices (e.g., keyboards, files, etc.).
 Here's a brief overview of the key components:
 
@@ -1187,8 +1206,8 @@ Static member variables and functions are part of a class but are shared among a
 
 #### 1 Static Member Variables
 Static member variables are declared inside the class with the static keyword and must be defined outside the class.
-**Scope:** Shared across all instances of a class.
-**Lifetime:** Exists for the duration of the program, similar to static local variables.
+- **Scope:** Shared across all instances of a class.
+- **Lifetime:** Exists for the duration of the program, similar to static local variables.
 
 **Initialization:**
 To initialize a static member variable in C++, you need to follow a specific process. Here's a step-by-step guide on how to do it:
@@ -1239,7 +1258,7 @@ public:
     }
 };
 
-// Definition of the static member variable
+// Definition of the static member variable (*note: I need to specified the type)
 int MyClass::staticValue = 0;
 
 int main() {
@@ -1254,6 +1273,10 @@ int main() {
     return 0;
 }
 ```
+#### *Note: Why do you need to write the type in the definition?
+- Inside the class, static int myStaticVar; is a declaration. It tells the compiler that the class has a static variable, but it doesn't allocate memory or provide an initial value.
+- Outside the class, when you write int MyClass::myStaticVar = 42;, this is the definition. In C++, definitions must specify the type to allocate memory for the static variable and optionally provide an initial value.
+
 #### 2 Static Member Functions
 Note: In a non member function i can't use the "this" ketword
 ```C++
@@ -1295,7 +1318,8 @@ In this example, setStaticValue and showStaticValue are static member functions.
 - **Static Member Functions:** Can be called without creating an instance of the class. They can only access static member variables and functions.
 
 ***
-## REFERENCE
+
+## REFERENCE (&)
 A **reference** is an alternative name, or alias, for an already existing variable. It allows you to work with that variable using a different identifier, without making a copy of it. References are very useful for modifying function parameters, avoiding unnecessary copying of large objects, and making code more efficient.
 
 ### Basic Syntax
@@ -1378,7 +1402,209 @@ In general, references are preferred when you don't need the flexibility that po
 
 ***
 
-## POINTERS TO MEMBERS 
+## POINTERS TO MEMBERS
+In C++, pointers to members are a special type of pointer that point to non-static members of a class (both member functions and member variables). Unlike regular pointers that point to an address in memory, pointers to members refer to a specific member within the context of an instance of a class.
+
+### 1.Pointers to Member Variables
+A *pointer to a member variable* refers to a data member of a class. It's not a regular pointer to memory but **requires an instance of the class** to be used.
+
+#### Syntax
+```C++
+class MyClass {
+public:
+    int value;
+};
+
+// Declare a pointer to the member 'value' of MyClass
+int MyClass::* ptrToMember = &MyClass::value;
+
+// Using the pointer with an instance
+MyClass obj;
+obj.value = 10;
+
+std::cout << obj.*ptrToMember << std::endl;  // Outputs 10
+```
+- MyClass::* means "pointer to a member of MyClass."
+- The **&MyClass::value** initializes the pointer to the specific member variable.
+- To access the member via the pointer, you use obj.*ptrToMember or ptr->*ptrToMember if using a pointer to the object.
+
+### 2.Pointers to Member Functions
+Pointers to member functions point to a function inside a class, but they also **require an instance of the class** to call the function.
+
+#### Syntax
+```C++
+class MyClass {
+public:
+    void display() {
+        std::cout << "Hello from MyClass!" << std::endl;
+    }
+};
+
+// Declare a pointer to the member function 'display' of MyClass
+void (MyClass::*ptrToFunction)() = &MyClass::display;
+
+// Using the pointer with an instance
+MyClass obj;
+(obj.*ptrToFunction)();  // Outputs: Hello from MyClass!
+```
+- **void (MyClass::*)()** is a pointer to a member function of MyClass that takes no parameters and returns void.
+- The syntax to invoke the function through the pointer is **obj.*ptrToFunction()**.
+
+### 3.Pointers to an Object
+```C++
+MyClass* objPtr = &obj;
+(objPtr->*ptrToFunction)();  // Outputs: Hello from MyClass!
+```
+
+### Why Pointers to Members are Different
+- **Pointer to data members:**A pointer to a data member doesn't directly refer to a specific memory location. Instead, it's an offset from the start of a class instance. You can't directly dereference it like a normal pointer.
+- **Pointer to member functions:**Since member functions can depend on the object instance (due to this), a pointer to a member function can't be called directly like a normal function pointer. It always requires an instance of the class to bind the function to.
+
+### Use Cases
+-**Callbacks in classes:**Pointers to member functions are often used to define callbacks inside classes where different objects might behave differently.
+-**Dynamic behavior:**You can dynamically decide which member variable or function to access at runtime, which is useful for creating flexible and extensible designs.
+
+#### Example with both types of pointers:
+```C++
+class MyClass {
+public:
+    int value;
+    
+    void printValue() {
+        std::cout << "Value: " << value << std::endl;
+    }
+};
+
+int main() {
+    // Pointer to member variable
+    int MyClass::*ptrToVar = &MyClass::value;
+    
+    // Pointer to member function
+    void (MyClass::*ptrToFunc)() = &MyClass::printValue;
+    
+    // Create an instance
+    MyClass obj;
+    obj.value = 42;
+    
+    // Access member variable via pointer
+    std::cout << "Member variable value: " << obj.*ptrToVar << std::endl;
+    
+    // Call member function via pointer
+    (obj.*ptrToFunc)();
+    
+    return 0;
+}
+```
+
+***
+
+## STD::VECTOR 
+https://cplusplus.com/reference/vector/vector/
+
+**std::vector** is a dynamic array provided by the C++ Standard Library, part of the container classes in the std namespace. It allows you to store and manipulate a sequence of elements in a contiguous memory block. Unlike regular arrays, std::vector automatically resizes itself as needed when elements are added or removed, making it much more flexible and easier to use.
+
+### Key Features of std::vector:
+#### 1. Dynamic Size:
+- Unlike arrays, which have a fixed size, vectors can grow or shrink dynamically as elements are added or removed.
+```C++
+numbers.push_back(10);  // Adds 10 to the end of the vector without specify the size of the vector upfront
+```
+#### 2. Contiguous Memory:
+- Elements are stored in contiguous memory locations, making random access (via the [] operator or at() method) very efficient, similar to an array.
+```C++
+int firstNumber = numbers[0];  // Access the first element
+```
+#### 3. Automatic Memory Management - Capacity and Size:
+- When more elements are added, the vector automatically reallocates its memory and copies over the existing elements to the new larger memory block.
+#### 4. STL Compatibility:
+- std::vector works seamlessly with other parts of the C++ Standard Template Library (STL), such as algorithms (e.g., std::sort, std::find), iterators, and range-based loops.
+#### 5. Efficient Insertion/Removal at the End:
+- Adding or removing elements at the end (push_back and pop_back) is very efficient (amortized constant time, O(1)), but inserting or removing elements in the middle or front takes linear time (O(n)).
+
+### Declaration
+To declare a vector, you use the std::vector template class and specify the type of elements it will store. For example:
+```C++
+#include <vector>
+
+std::vector<int> numbers;  // Vector of integers
+std::vector<std::string> names;  // Vector of strings
+```
+
+### Common Methods:
+- **push_back()**: Add an element at the end.
+- **pop_back()**: Remove the last element.
+- **Capacity and Size**:std::vector has both size and capacity. Size is the number of elements in the vector, while capacity is the amount of memory allocated, which may be larger than the current size to allow for future growth.
+```C++
+std::cout << numbers.size();     // Number of elements in the vector
+std::cout << numbers.capacity(); // Memory allocated for the vector
+```
+- **Resize**: You can resize the vector explicitly using the resize() method. 
+```C++
+numbers.resize(5);  // Resizes the vector to contain 5 elements
+```
+- **clear()**: Remove all elements from the vector.
+- **empty()**: Check if the vector is empty.
+- **at(index)**: Access element at a specific position with bounds checking.
+
+### Iterators
+In C++, std::vector provides several types of iterators, which allow you to traverse or modify elements within the vector. These iterators are similar to pointers in their syntax, but they have special behaviors designed for working with containers like std::vector.
+
+A normal iterator starts at the beginning of the vector and moves forward through the elements.
+- **begin():** Returns an iterator to the first element.
+- **end():** Returns an iterator to the position after the last element.
+
+#### example
+```C++
+#include <iostream>
+#include <vector>
+
+int main() {
+    std::vector<int> vec = {1, 2, 3, 4, 5};
+
+    // Using a normal iterator
+    for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        std::cout << *it << " ";
+    }
+
+    return 0;
+}
+```
+
+***
+
+## STD::PAIR
+std::pair is a utility from the Standard Library that allows you to store and work with **two values as a single unit**. These values can be of different types, and std::pair is useful when you want to **group two related pieces of data together**.
+
+### How std::pair Works:
+A std::pair holds **two values** (referred to as first and second), which can be **of any type**. It’s often used in situations where you need to **return two values from a function, or when working with key-value pairs** (e.g., in std::map).
+
+### Declaring a std::pair
+To declare a std::pair, you specify the types of the two values it holds. For example:
+```C++
+#include <utility>  // Required for std::pair
+#include <iostream>
+
+int main() {
+    // Declare a pair holding an int and a string
+    std::pair<int, std::string> myPair;
+
+    // Assign values to the pair
+    myPair.first = 1;
+    myPair.second = "Hello";
+
+    // Accessing the values
+    std::cout << "First: " << myPair.first << ", Second: " << myPair.second << std::endl;
+
+    return 0;
+}
+```
+
+### Creating and Initializing a std::pair
+There are different ways to create and initialize a std::pair:
+- **Default Constructor:**Creates a pair with default-initialized values.
+```C++
+std::pair<int, std::string> myPair;  // Default constructor
+```
 
 
 
@@ -1392,8 +1618,7 @@ In general, references are preferred when you don't need the flexibility that po
 
 
 
-
-
+***
 
 # C++ PROJECT GUIDELINES
 

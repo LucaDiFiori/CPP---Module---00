@@ -18,9 +18,9 @@ Contact::Contact()
 };
 
 // Setters
-std::string Contact::getFirstName() const
+std::string Contact::getFisrtName() const
 {
-	return (this->_firstName);
+	return (this->_firstName); 
 };
 
 std::string Contact::getLastName() const
@@ -68,4 +68,3 @@ void	Contact::setDarkSecret(std::string darkSecret)
 {
 	this->_darkSecret = darkSecret;
 };
-

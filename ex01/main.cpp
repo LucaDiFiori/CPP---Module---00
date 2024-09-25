@@ -29,6 +29,17 @@ int main()
 			break;
 		else if (cmd == "SEARCH")
 			phoneBook.search();
+		else if (cmd == "SHOW")
+		{
+			int i = 0;
+			while (i < 8)
+			{
+				std::cout <<WHITE "Contact " << i << std::endl;
+				phoneBook.getContact(i);
+				i++;
+			}
+		}
+
 		else 
 			std::cout << RED "Command not found" << std::endl;
 

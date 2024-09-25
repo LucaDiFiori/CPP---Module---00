@@ -34,7 +34,6 @@ void PhoneBook::start(void)
 	std::cout << GREEN "-> exit the PhoneBook by typing 'EXIT'." << std::endl;
 };
 
-//add utils - mettere controlli tipe se uno inserisce stringa vuota o cose del genere, SE IL NUMERO DI TELEFONO è COMPOSTO SOLO DA NUMERI
 
 // NOTE: std::ws: This is a manipulator that tells the input stream to discard 
 //       any leading whitespace (such as spaces, tabs, or newlines) before 
@@ -170,69 +169,29 @@ void PhoneBook::add(void)
     std::cout << GREEN "Contact added successfully!" << std::endl;
 }
 
-//stamopa le info del contatto voluto una riga dopo l altra
+
+//Search method
+void PhoneBook::search(void)
+{
+    if (this->_nbContacts == 0)
+    {
+        std::cout << RED "The PhoneBook is empty!" << std::endl;
+        return;
+    }
+}
+
+
+
+
+
+
+
 void PhoneBook::getContact(int index) const
 {
-    std::cout << std::endl;
-	std::cout << "name : " << this->_contacts[index].getFirstName() << std::endl;
+	std::cout << "name : " << this->_contacts[index].getFisrtName() << std::endl;
 	std::cout << "last name : " << this->_contacts[index].getLastName() << std::endl;
 	std::cout << "nickname : " << this->_contacts[index].getNickName() << std::endl;
 	std::cout << "phone number : " << this->_contacts[index].getPhoneNumber() << std::endl;
 	std::cout << "dark secret :" << this->_contacts[index].getDarkSecret() << std::endl;
 	std::cout << std::endl;
 };
-
-
-
-//Questo metodo stampa i contatti in una tabella
-void PhoneBook::show(void) const
-{
-    
-    if (this->_nbContacts == 0)
-    {
-        std::cout << RED "The PhoneBook is empty!" << std::endl;
-        return;
-    }
-    Utils::printHeader();
-    for (int i = 0; i < this->_nbContacts; i++)
-    {
-        std::cout << "|" << "         " << i << Utils::formatFields(this->_contacts[i].getFirstName());
-        std::cout << Utils::formatFields(this->_contacts[i].getLastName());
-        std::cout << Utils::formatFields(this->_contacts[i].getNickName()) << "|" << std::endl;
-        std::cout << "---------------------------------------------" << std::endl;
-    }
-    return;
-}
-
-//SEARCH method
-void PhoneBook::search(void) const
-{
-    int index;
-
-    if (this->_nbContacts == 0)
-    {
-        std::cout << RED "The PhoneBook is empty!" << std::endl;
-        return;
-    }
-    PhoneBook::show();
-    while (true)
-    {
-        std::cout << BLUE "Enter the index of the contact you want to see: " << std::endl;
-        std::cin >> index;
-        if (std::cin.fail() || index < 0 || index >= this->_nbContacts)
-        {
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            std::cout << RED "Invalid index! Please try again." << std::endl;
-        }
-        else
-        {
-            this->getContact(index);
-            break;
-        }
-    }
-}
-
-
-
-

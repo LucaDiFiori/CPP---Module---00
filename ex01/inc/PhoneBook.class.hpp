@@ -37,20 +37,14 @@ class PhoneBook
 
 		//Methods
 		void start(void);
-		
 		void addName(int index);
 		void addLastName(int index);
 		void addNickName(int index);
 		void addPhoneNumber(int index);
 		void addDarkSecret(int index);
-		void getContact(int index) const;
-
-		
 		void add(void);
-		
-		void show(void) const;
-		void search(void) const;		
+		void search(void);
+		void getContact(int index) const;		
 };
-
 
 #endif
