@@ -16,6 +16,7 @@ The provided C++ program processes command-line arguments by converting each arg
 - [SCOPE RESOLUTION OPERATOR "::"](#scope-resolution-operator-"::")
 - [STD IOSTREAMS](#std-iostreams)
 - [CLASS AND INSTANCE](#class-and-instance)
+- [DIRECT INITIALIZATION](#direct-initialization)
 - [THIS](#this)
 - [INITIALIZATION LIST](#initialization-list)
 - [CONST](#const)
@@ -25,8 +26,10 @@ The provided C++ program processes command-line arguments by converting each arg
 - [STATIC - NON MEMBER ATTRIBUTES AND NON MEMBER FUNCTIONS](#static---non-member-attributes-and-non-member-functions)
 - [REFERENCE (&)](#reference-(&))
 - [POINTERS TO MEMBERS](#pointers-to-members)
-- [STD::VECTOR](#std::vector)
-- [STD::PAIR](#std::pair)
+- [STD::VECTOR](#stdvector)
+- [STD::FOR_EACH](#stdfor_each)
+- [STD::MEM_FUN_REF](#stdmem_fun_ref)
+- [STD::PAIR](#stdpair)
 
 ***
 
@@ -540,6 +543,37 @@ int main() {
 - **Automatic (Stack) Variables:** When a local object goes out of scope, its destructor is called automatically if one is defined. If no destructor is defined, the compiler generates a default one.
 - **Dynamic (Heap) Variables:** Objects created with new need to be explicitly deleted using delete to ensure that their destructors are called and resources are properly released.
 - **No Destructor Defined:** If no destructor is explicitly defined, the compiler provides a default destructor that performs basic cleanup.
+
+***
+
+## DIRECT INITIALIZATION
+Direct initialization in C++ is a method of creating an object or variable using parentheses, rather than an assignment with an equal sign. This approach can be used for various types of objects, including built-in types (like integers and floats) and user-defined types (like classes and structs).
+
+### Syntax
+The syntax for direct initialization is as follows:
+```C++
+TypeName variableName(arguments);
+```
+
+### Example of Direct Initialization
+- Here’s a basic example using an integer:
+```C++
+int x(5); // Directly initializes x to 5
+```
+
+- Direct initialization is especially useful for user-defined types, such as classes. Here’s an example with a simple class:
+```C++
+class Point {
+public:
+    Point(int x, int y) : x(x), y(y) {} // Constructor
+    int x, y;
+};
+
+int main() {
+    Point p(1, 2); // Directly initializes an object of Point with x=1 and y=2
+}
+```
+
 
 ***
 
@@ -1530,6 +1564,66 @@ std::vector<int> numbers;  // Vector of integers
 std::vector<std::string> names;  // Vector of strings
 ```
 
+### Constructor
+#### 1. Default Constructor
+```C++
+std::vector<T> v;
+```
+Creates an empty vector.
+**example**
+```C++
+std::vector<int> v; // An empty vector of integers
+```
+
+#### 2. Fill Constructor
+```C++
+std::vector<T> v(size_type count);
+std::vector<T> v(size_type count, const T& value);
+```
+- The first form creates a vector with count default-initialized elements (for integers, it will be 0; for custom types, the default constructor is called).
+- The second form creates a vector with count copies of value.
+**example**
+```C++
+std::vector<int> v(5); // A vector with 5 integers, all initialized to 0
+std::vector<int> v2(5, 10); // A vector with 5 integers, all initialized to 10
+```
+
+#### 3. Range Constructor
+```C++
+template <class InputIt>
+std::vector<T> v(InputIt first, InputIt last);
+```
+- **InputIt first**: An iterator pointing to the first element in the range to copy/move
+- **InputIt last**: An iterator pointing just past the last element in the range to copy/move (exclusive).
+Creates a vector and initializes it with elements from the range [first, last). The range is typically defined by two iterators.
+**example**
+```C++
+int arr[] = {1, 2, 3, 4, 5};
+std::vector<int> v(arr, arr + 5); // A vector with elements from the array arr
+```
+
+#### 4. Copy Constructor
+```C++
+std::vector<T> v(const std::vector<T>& other);
+```
+Creates a new vector as a copy of the existing vector other.
+**example**
+```C++
+std::vector<int> v1 = {1, 2, 3};
+std::vector<int> v2(v1); // A vector that is a copy of v1
+```
+
+#### 5. Move Constructor
+```C++
+td::vector<T> v(std::vector<T>&& other);
+```
+Moves the contents of other into the new vector. After the move, other is left in a valid but unspecified state (typically, other will be empty).
+**example**
+```C++
+std::vector<int> v1 = {1, 2, 3};
+std::vector<int> v2(std::move(v1)); // v1 is now empty, and v2 has the contents of v1
+```
+
 ### Common Methods:
 - **push_back()**: Add an element at the end.
 - **pop_back()**: Remove the last element.
@@ -1550,8 +1644,8 @@ numbers.resize(5);  // Resizes the vector to contain 5 elements
 In C++, std::vector provides several types of iterators, which allow you to traverse or modify elements within the vector. These iterators are similar to pointers in their syntax, but they have special behaviors designed for working with containers like std::vector.
 
 A normal iterator starts at the beginning of the vector and moves forward through the elements.
-- **begin():** Returns an iterator to the first element.
-- **end():** Returns an iterator to the position after the last element.
+- **begin()**: Returns an iterator to the first element.
+- **end()**: Returns an iterator to the position after the last element.
 
 #### example
 ```C++
@@ -1569,6 +1663,124 @@ int main() {
     return 0;
 }
 ```
+
+***
+
+## STD::FOR_EACH
+ is a standard algorithm in the C++ Standard Library that applies a specified function or operation to each element in a range of elements (typically from a container like a vector, array, list, etc.).
+
+ ```C++
+std::for_each(first, last, function);
+```
+
+#### parameters
+- first: An iterator to the first element of the range.
+- last: An iterator to one-past the last element of the range.
+- function: A function (or function object, or lambda expression) to apply to each element in the range.
+
+***
+
+## STD::MEM_FUN_REF
+### Explanation of a Function Adapter
+A function adapter is a utility in the C++ Standard Library that transforms functions or member functions into function objects (also known as functors). This allows functions (or member functions) to be passed as arguments to algorithms like std::for_each, which expect a function object.
+
+### Understanding std::mem_fun_ref
+std::mem_fun_ref is a function adapter that wraps a member function of a class so that it can be used as a function object. This was useful in C++98/03, where algorithms like std::for_each required function objects (like functors or pointers to functions), but couldn't directly accept member function pointers.
+
+Was used to call a member function of a class on each object in a collection as if it were a normal function.Example Without std::mem_fun_ref
+
+The std::mem_fun_ref function template takes a member function pointer as its parameter. Here’s the signature focusing on the parameters:
+```C++
+template <class T>
+std::mem_fun_ref<T> mem_fun_ref(T (X::*f)());
+```
+- T: The return type of the member function.
+- X: The class type to which the member function belongs.
+- f: A pointer to a member function of type T (X::*)(), which means it points to a member function that takes no parameters and returns T.
+
+The return type of std::mem_fun_ref is a functor (a callable object) that allows you to call the specified member function on an instance of the class.
+
+#### Example Without std::mem_fun_ref
+Imagine you have a class Person with a member function greet() that prints a message:
+```C++
+#include <iostream>
+
+class Person {
+public:
+    void greet() const {
+        std::cout << "Hello!" << std::endl;
+    }
+};
+
+int main() {
+    Person p;
+    p.greet();  // Direct call to greet()
+    return 0;
+}
+```
+In this case, you are directly calling the greet() method on the object p.
+
+##### Using a Vector of Objects
+If you have a vector of Person objects and you want to call the greet() method on each element, you cannot simply pass the function as if it were a global function:
+```C++
+#include <iostream>
+#include <vector>
+
+class Person {
+public:
+    void greet() const {
+        std::cout << "Hello!" << std::endl;
+    }
+};
+
+int main() {
+    std::vector<Person> people(3);  // A vector of 3 Person objects
+    
+    // You cannot do this:
+    // std::for_each(people.begin(), people.end(), greet);
+    
+    return 0;
+}
+```
+
+#### Example using std::mem_fun_ref
+With std::mem_fun_ref, you can create a functor that automatically calls the member function greet() for each object in the vector:
+```C++
+#include <iostream>
+#include <vector>
+#include <algorithm>  // For std::for_each
+#include <functional> // For std::mem_fun_ref
+
+class Person {
+public:
+    void greet() const {
+        std::cout << "Hello!" << std::endl;
+    }
+};
+
+int main() {
+    std::vector<Person> people(3);  // A vector of 3 Person objects
+    
+    // Call greet() on each person in the vector
+    std::for_each(people.begin(), people.end(), std::mem_fun_ref(&Person::greet));
+    
+    return 0;
+}
+```
+- std::mem_fun_ref(&Person::greet) creates a functor (a callable function object) that calls greet() on each Person object in the vector.
+- std::for_each applies this functor to all the objects in the people vector.
+
+#### Summary:
+Think of std::mem_fun_ref as "converting" the member function greet into a function that can be applied to all the objects in a collection as if it were a regular function.
+##### 1.Member Function Context:
+In C++, member functions are associated with a specific class and require an instance of that class (an object) to be invoked. For example, calling obj.displayStatus() requires obj to be an instance of a class that has the displayStatus member function.
+
+##### 2. Using Standard Algorithms:
+Standard algorithms like std::for_each expect a callable object (e.g., a function pointer, lambda, or functor) that can be invoked without needing to know about the specific class or instance. However, a member function cannot be used directly as a standalone function pointer.
+
+##### 3. Wrapping:
+When you use std::mem_fun_ref, it "wraps" the member function pointer (&Account::displayStatus) in a functor that can be called without directly needing an instance of Account. Instead, the functor can be applied to each Account object in a collection during the iteration.
+("wraps the member function" refers to the process of creating a callable object (like a functor))
 
 ***
 
@@ -1601,10 +1813,51 @@ int main() {
 
 ### Creating and Initializing a std::pair
 There are different ways to create and initialize a std::pair:
-- **Default Constructor:**Creates a pair with default-initialized values.
+- **Default Constructor**:Creates a pair with default-initialized values.
 ```C++
 std::pair<int, std::string> myPair;  // Default constructor
 ```
+- **Constructor with Values**:You can initialize both values in the constructor.
+```C++
+std::pair<int, std::string> myPair(1, "Hello");
+```
+- **Using std::make_pair()**:This function creates a pair without having to specify the types explicitly. The types are inferred from the arguments.
+```C++
+auto myPair = std::make_pair(1, "Hello");
+```
+
+### Accessing Elements in a std::pair
+- **first**:Refers to the first element in the pair.
+- **second**:Refers to the second element in the pair.
+```C++
+std::pair<int, std::string> myPair(1, "Hello");
+
+std::cout << myPair.first;   // Outputs: 1
+std::cout << myPair.second;  // Outputs: Hello
+```
+
+### Example Use Cases of std::pair
+#### Returning Multiple Values from a Function
+You can return two related values (e.g., a result code and a value) from a function using std::pair.
+```C++
+std::pair<int, std::string> getResult() {
+    return std::make_pair(200, "OK");
+}
+
+int main() {
+    auto result = getResult();
+    std::cout << "Code: " << result.first << ", Message: " << result.second;
+    return 0;
+}
+```
+
+#### Key-Value Pairs (Common in Maps)
+In std::map, keys and values are stored as std::pair. The first value in the pair is the key, and the second is the value.
+```C++
+std::map<int, std::string> myMap;
+myMap.insert(std::make_pair(1, "Apple"));
+```
+
 
 
 
