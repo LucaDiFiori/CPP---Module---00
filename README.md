@@ -1224,7 +1224,7 @@ Let's delve into non-member attributes and non-member functions with a focus on 
 
 We saw that a member function or attribute is something present in the instance of a class. This means that the class needs to be instantiated in order to use these attributes or functions. Another property of member attributes is that each attribute is unique to every instance
 
-### Static Keyword Overview
+## Static Keyword Overview
 In C++, the static keyword can be used in different contexts:
 
 - **Static Member Variables:** Belong to the class rather than any particular instance.
@@ -1232,14 +1232,19 @@ In C++, the static keyword can be used in different contexts:
 - **Static Local Variables:** Persist between function calls and retain their value.
 - **Static Global Variables and Functions:** Have internal linkage, meaning they are limited to the file in which they are defined.
 
-### Non-Member Attributes with Static Keyword
+## Non-Member Attributes with Static Keyword
 C++ does not have "non-member attributes" in the sense of class-level attributes outside of classes. However, you can use the static keyword for global variables and functions to achieve a similar effect.
 
-### Static Member Variables and Functions
+## Static Member Variables and Functions
 Static member variables and functions are part of a class but are shared among all instances of the class. They can be accessed without creating an instance of the class.
 
-#### 1 Static Member Variables
+### 1 Static Member Variables
 Static member variables are declared inside the class with the static keyword and must be defined outside the class.
+
+**'static' means that there is only one copy of the variable shared across all instances of the class, regardless of how many objects are created. It belongs to the class itself, not to any specific object of the class**
+So a static variable in a class means that all instances (objects) of that class share the same copy of the variable.
+If you change the value of a static variable in one instance of the class, the change will be reflected in all other instances of the class.
+
 - **Scope:** Shared across all instances of a class.
 - **Lifetime:** Exists for the duration of the program, similar to static local variables.
 
@@ -1311,7 +1316,7 @@ int main() {
 - Inside the class, static int myStaticVar; is a declaration. It tells the compiler that the class has a static variable, but it doesn't allocate memory or provide an initial value.
 - Outside the class, when you write int MyClass::myStaticVar = 42;, this is the definition. In C++, definitions must specify the type to allocate memory for the static variable and optionally provide an initial value.
 
-#### 2 Static Member Functions
+### 2 Static Member Functions
 Note: In a non member function i can't use the "this" ketword
 ```C++
 #include <iostream>
@@ -1356,7 +1361,7 @@ In this example, setStaticValue and showStaticValue are static member functions.
 ## REFERENCE (&)
 A **reference** is an alternative name, or alias, for an already existing variable. It allows you to work with that variable using a different identifier, without making a copy of it. References are very useful for modifying function parameters, avoiding unnecessary copying of large objects, and making code more efficient.
 
-### Basic Syntax
+## Basic Syntax
 To create a reference in C++, you use the **&** symbol. Here’s the basic syntax:
 ```C++
 int original = 10;
@@ -1364,7 +1369,7 @@ int &ref = original;  // 'ref' is now a reference to 'original'
 ```
 In this example, ref is a reference to the variable 'original'. Any operation on ref will affect original directly because ref is just another name for 'original'.
 
-### Key Characteristics of References
+## Key Characteristics of References
 - 1. **Must be initialized:** A reference must be initialized when it is created.
   You cannot declare a reference without assigning it to an existing variable.
   ```C++
@@ -1381,7 +1386,7 @@ In this example, ref is a reference to the variable 'original'. Any operation on
   - 3. **Aliasing:** References allow you to alias a variable, making your code
     cleaner, especially in function parameters and return values.
 
-### References in Functions
+## References in Functions
 One of the most common uses of references in C++ is in function parameters. They allow you to modify the arguments passed to a function or avoid copying large objects.
 
 #### Example 1: Modifying Function Parameters
@@ -1439,10 +1444,10 @@ In general, references are preferred when you don't need the flexibility that po
 ## POINTERS TO MEMBERS
 In C++, pointers to members are a special type of pointer that point to non-static members of a class (both member functions and member variables). Unlike regular pointers that point to an address in memory, pointers to members refer to a specific member within the context of an instance of a class.
 
-### 1.Pointers to Member Variables
+## 1.Pointers to Member Variables
 A *pointer to a member variable* refers to a data member of a class. It's not a regular pointer to memory but **requires an instance of the class** to be used.
 
-#### Syntax
+### Syntax
 ```C++
 class MyClass {
 public:
@@ -1462,10 +1467,10 @@ std::cout << obj.*ptrToMember << std::endl;  // Outputs 10
 - The **&MyClass::value** initializes the pointer to the specific member variable.
 - To access the member via the pointer, you use obj.*ptrToMember or ptr->*ptrToMember if using a pointer to the object.
 
-### 2.Pointers to Member Functions
+## 2.Pointers to Member Functions
 Pointers to member functions point to a function inside a class, but they also **require an instance of the class** to call the function.
 
-#### Syntax
+### Syntax
 ```C++
 class MyClass {
 public:
@@ -1484,7 +1489,7 @@ MyClass obj;
 - **void (MyClass::*)()** is a pointer to a member function of MyClass that takes no parameters and returns void.
 - The syntax to invoke the function through the pointer is **obj.*ptrToFunction()**.
 
-### 3.Pointers to an Object
+## 3.Pointers to an Object
 ```C++
 MyClass* objPtr = &obj;
 (objPtr->*ptrToFunction)();  // Outputs: Hello from MyClass!
@@ -1537,25 +1542,25 @@ https://cplusplus.com/reference/vector/vector/
 
 **std::vector** is a dynamic array provided by the C++ Standard Library, part of the container classes in the std namespace. It allows you to store and manipulate a sequence of elements in a contiguous memory block. Unlike regular arrays, std::vector automatically resizes itself as needed when elements are added or removed, making it much more flexible and easier to use.
 
-### Key Features of std::vector:
-#### 1. Dynamic Size:
+## Key Features of std::vector:
+### 1. Dynamic Size:
 - Unlike arrays, which have a fixed size, vectors can grow or shrink dynamically as elements are added or removed.
 ```C++
 numbers.push_back(10);  // Adds 10 to the end of the vector without specify the size of the vector upfront
 ```
-#### 2. Contiguous Memory:
+### 2. Contiguous Memory:
 - Elements are stored in contiguous memory locations, making random access (via the [] operator or at() method) very efficient, similar to an array.
 ```C++
 int firstNumber = numbers[0];  // Access the first element
 ```
-#### 3. Automatic Memory Management - Capacity and Size:
+### 3. Automatic Memory Management - Capacity and Size:
 - When more elements are added, the vector automatically reallocates its memory and copies over the existing elements to the new larger memory block.
-#### 4. STL Compatibility:
+### 4. STL Compatibility:
 - std::vector works seamlessly with other parts of the C++ Standard Template Library (STL), such as algorithms (e.g., std::sort, std::find), iterators, and range-based loops.
-#### 5. Efficient Insertion/Removal at the End:
+### 5. Efficient Insertion/Removal at the End:
 - Adding or removing elements at the end (push_back and pop_back) is very efficient (amortized constant time, O(1)), but inserting or removing elements in the middle or front takes linear time (O(n)).
 
-### Declaration
+## Declaration
 To declare a vector, you use the std::vector template class and specify the type of elements it will store. For example:
 ```C++
 #include <vector>
@@ -1564,8 +1569,8 @@ std::vector<int> numbers;  // Vector of integers
 std::vector<std::string> names;  // Vector of strings
 ```
 
-### Constructor
-#### 1. Default Constructor
+## Constructor
+### 1. Default Constructor
 ```C++
 std::vector<T> v;
 ```
@@ -1575,7 +1580,7 @@ Creates an empty vector.
 std::vector<int> v; // An empty vector of integers
 ```
 
-#### 2. Fill Constructor
+### 2. Fill Constructor
 ```C++
 std::vector<T> v(size_type count);
 std::vector<T> v(size_type count, const T& value);
@@ -1588,7 +1593,7 @@ std::vector<int> v(5); // A vector with 5 integers, all initialized to 0
 std::vector<int> v2(5, 10); // A vector with 5 integers, all initialized to 10
 ```
 
-#### 3. Range Constructor
+### 3. Range Constructor
 ```C++
 template <class InputIt>
 std::vector<T> v(InputIt first, InputIt last);
@@ -1602,7 +1607,7 @@ int arr[] = {1, 2, 3, 4, 5};
 std::vector<int> v(arr, arr + 5); // A vector with elements from the array arr
 ```
 
-#### 4. Copy Constructor
+### 4. Copy Constructor
 ```C++
 std::vector<T> v(const std::vector<T>& other);
 ```
@@ -1613,7 +1618,7 @@ std::vector<int> v1 = {1, 2, 3};
 std::vector<int> v2(v1); // A vector that is a copy of v1
 ```
 
-#### 5. Move Constructor
+### 5. Move Constructor
 ```C++
 td::vector<T> v(std::vector<T>&& other);
 ```
@@ -1624,7 +1629,7 @@ std::vector<int> v1 = {1, 2, 3};
 std::vector<int> v2(std::move(v1)); // v1 is now empty, and v2 has the contents of v1
 ```
 
-### Common Methods:
+## Common Methods:
 - **push_back()**: Add an element at the end.
 - **pop_back()**: Remove the last element.
 - **Capacity and Size**:std::vector has both size and capacity. Size is the number of elements in the vector, while capacity is the amount of memory allocated, which may be larger than the current size to allow for future growth.
@@ -1640,7 +1645,7 @@ numbers.resize(5);  // Resizes the vector to contain 5 elements
 - **empty()**: Check if the vector is empty.
 - **at(index)**: Access element at a specific position with bounds checking.
 
-### Iterators
+## Iterators
 In C++, std::vector provides several types of iterators, which allow you to traverse or modify elements within the vector. These iterators are similar to pointers in their syntax, but they have special behaviors designed for working with containers like std::vector.
 
 A normal iterator starts at the beginning of the vector and moves forward through the elements.
@@ -1673,7 +1678,7 @@ int main() {
 std::for_each(first, last, function);
 ```
 
-#### parameters
+### parameters
 - first: An iterator to the first element of the range.
 - last: An iterator to one-past the last element of the range.
 - function: A function (or function object, or lambda expression) to apply to each element in the range.
@@ -1684,7 +1689,7 @@ std::for_each(first, last, function);
 ### Explanation of a Function Adapter
 A function adapter is a utility in the C++ Standard Library that transforms functions or member functions into function objects (also known as functors). This allows functions (or member functions) to be passed as arguments to algorithms like std::for_each, which expect a function object.
 
-### Understanding std::mem_fun_ref
+## Understanding std::mem_fun_ref
 std::mem_fun_ref is a function adapter that wraps a member function of a class so that it can be used as a function object. This was useful in C++98/03, where algorithms like std::for_each required function objects (like functors or pointers to functions), but couldn't directly accept member function pointers.
 
 Was used to call a member function of a class on each object in a collection as if it were a normal function.Example Without std::mem_fun_ref
@@ -1720,7 +1725,7 @@ int main() {
 ```
 In this case, you are directly calling the greet() method on the object p.
 
-##### Using a Vector of Objects
+#### Using a Vector of Objects
 If you have a vector of Person objects and you want to call the greet() method on each element, you cannot simply pass the function as if it were a global function:
 ```C++
 #include <iostream>
