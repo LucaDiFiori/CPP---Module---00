@@ -1241,7 +1241,8 @@ Static member variables and functions are part of a class but are shared among a
 ### 1 Static Member Variables
 Static member variables are declared inside the class with the static keyword and must be defined outside the class.
 
-**'static' means that there is only one copy of the variable shared across all instances of the class, regardless of how many objects are created. It belongs to the class itself, not to any specific object of the class**
+**'static' means that there is only one copy of the variable shared across all instances of the class, regardless of how many objects are created. It belongs to the class itself, not to any specific object of the class**.
+
 So a static variable in a class means that all instances (objects) of that class share the same copy of the variable.
 If you change the value of a static variable in one instance of the class, the change will be reflected in all other instances of the class.
 
