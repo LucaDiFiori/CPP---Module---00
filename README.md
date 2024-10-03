@@ -13,7 +13,7 @@ The provided C++ program processes command-line arguments by converting each arg
 
 # Table of Contents
 - [NAMESPACE](#namespace)
-- [SCOPE RESOLUTION OPERATOR " :: "](#scope-resolution-operator-"::")
+- [SCOPE RESOLUTION OPERATOR '::'](#scope-resolution-operator-"::")
 - [STD IOSTREAMS](#std-iostreams)
 - [CLASS AND INSTANCE](#class-and-instance)
 - [DIRECT INITIALIZATION](#direct-initialization)
